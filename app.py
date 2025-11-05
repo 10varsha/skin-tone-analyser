@@ -6,34 +6,139 @@ from PIL import Image
 import datetime
 
 # MST skin tones (RGB tuples)
+# 50-tone skin scale (RGB tuples) - Fair to Deep Dark
 skin_tones = {
-    1: (255, 224, 220),
-    2: (255, 205, 190),
-    3: (240, 180, 150),      
-    4: (220, 160, 130),
-    5: (200, 140, 110),
-    6: (180, 120, 90),
-    7: (150, 90, 60),
-    8: (120, 70, 50),
-    9: (90, 50, 40),
-    10: (60, 30, 20)
+    # Very Fair (1-10)
+    1: (255, 235, 230),
+    2: (255, 228, 225),
+    3: (255, 224, 220),
+    4: (255, 220, 210),
+    5: (255, 215, 205),
+    6: (255, 210, 200),
+    7: (255, 205, 195),
+    8: (255, 205, 190),
+    9: (250, 200, 185),
+    10: (245, 195, 180),
+    
+    # Fair (11-20)
+    11: (240, 190, 175),
+    12: (240, 185, 170),
+    13: (240, 180, 165),
+    14: (240, 180, 150),
+    15: (235, 175, 145),
+    16: (230, 170, 140),
+    17: (225, 165, 135),
+    18: (220, 160, 130),
+    19: (215, 155, 125),
+    20: (210, 150, 120),
+    
+    # Light Medium (21-30)
+    21: (205, 145, 115),
+    22: (200, 140, 110),
+    23: (195, 135, 105),
+    24: (190, 130, 100),
+    25: (185, 125, 95),
+    26: (180, 120, 90),
+    27: (175, 115, 85),
+    28: (170, 110, 80),
+    29: (165, 105, 75),
+    30: (160, 100, 70),
+    
+    # Medium (31-40)
+    31: (155, 95, 65),
+    32: (150, 90, 60),
+    33: (145, 85, 58),
+    34: (140, 82, 56),
+    35: (135, 80, 54),
+    36: (130, 75, 52),
+    37: (125, 72, 50),
+    38: (120, 70, 50),
+    39: (115, 67, 48),
+    40: (110, 65, 46),
+    
+    # Deep Medium (41-45)
+    41: (105, 60, 44),
+    42: (100, 58, 42),
+    43: (95, 55, 40),
+    44: (90, 50, 40),
+    45: (85, 48, 38),
+    
+    # Deep Dark (46-50)
+    46: (80, 45, 36),
+    47: (70, 40, 32),
+    48: (65, 35, 28),
+    49: (60, 30, 25),
+    50: (50, 25, 20)
 }
 
+# Color recommendations based on 50-tone scale
 mst_recommendations = {
-    1: ["Lavender", "Baby Blue", "Mint", "Soft Pink", "Light Grey"],
-    2: ["Emerald", "Sapphire", "Ruby", "Navy Blue", "Burgundy"],
-    3: ["Coral", "Teal", "Aqua", "Dusty Rose", "Olive Green"],
-    4: ["Terracotta", "Burnt Orange", "Mustard", "Copper"],
-    5: ["Bright Blue", "Emerald", "Turquoise", "Deep Purple", "Coral"],
-    6: ["White", "Black", "Red", "Cobalt Blue", "Magenta"],
-    7: ["Gold", "Bronze", "Mustard", "Bright Green", "Royal Blue"],
-    8: ["Yellow", "Electric Blue", "Crimson", "Orange", "White"],
-    9: ["Emerald", "Sapphire", "Ruby", "Amethyst", "Silver", "Bright Red"],
-    10: ["White", "Neon Pink", "Gold", "Fuchsia", "Turquoise"]
+    # Very Fair (1-10) - Cool undertones work best
+    1: ["Soft Pink", "Powder Blue", "Lavender", "Mint Green", "Peach"],
+    2: ["Baby Blue", "Rose Pink", "Light Lavender", "Cream", "Soft Coral"],
+    3: ["Lavender", "Baby Blue", "Mint", "Soft Pink", "Light Grey"],
+    4: ["Periwinkle", "Blush Pink", "Sage Green", "Ivory", "Light Peach"],
+    5: ["Sky Blue", "Rose", "Lilac", "Champagne", "Soft Yellow"],
+    6: ["Powder Blue", "Dusty Pink", "Seafoam", "Vanilla", "Light Coral"],
+    7: ["Cornflower Blue", "Mauve", "Mint", "Cream", "Apricot"],
+    8: ["Cerulean", "Pink", "Aqua", "Beige", "Peach"],
+    9: ["Azure", "Salmon", "Turquoise", "Taupe", "Coral"],
+    10: ["Bright Blue", "Coral Pink", "Teal", "Sand", "Melon"],
+    
+    # Fair (11-20) - Warm and jewel tones
+    11: ["Teal", "Coral", "Periwinkle", "Camel", "Rose Gold"],
+    12: ["Emerald", "Peach", "Royal Blue", "Tan", "Copper"],
+    13: ["Coral", "Teal", "Aqua", "Dusty Rose", "Olive Green"],
+    14: ["Turquoise", "Salmon", "Navy", "Khaki", "Rust"],
+    15: ["Jade", "Apricot", "Cobalt", "Caramel", "Brick Red"],
+    16: ["Seafoam", "Tangerine", "Sapphire", "Mocha", "Terracotta"],
+    17: ["Mint", "Coral", "Deep Blue", "Bronze", "Burnt Sienna"],
+    18: ["Aquamarine", "Peach", "Indigo", "Cognac", "Cinnamon"],
+    19: ["Turquoise", "Mango", "Navy Blue", "Chestnut", "Paprika"],
+    20: ["Teal", "Cantaloupe", "Royal Blue", "Walnut", "Clay"],
+    
+    # Light Medium (21-30) - Rich, vibrant colors
+    21: ["Emerald", "Tangerine", "Cobalt", "Camel", "Crimson"],
+    22: ["Bright Blue", "Emerald", "Turquoise", "Deep Purple", "Coral"],
+    23: ["Peacock Blue", "Orange", "Violet", "Chocolate", "Red"],
+    24: ["Sapphire", "Mango", "Plum", "Espresso", "Scarlet"],
+    25: ["Electric Blue", "Papaya", "Eggplant", "Coffee", "Ruby"],
+    26: ["White", "Black", "Red", "Cobalt Blue", "Magenta"],
+    27: ["Bright Turquoise", "Coral Red", "Purple", "Dark Brown", "Hot Pink"],
+    28: ["Cyan", "Flame Orange", "Deep Purple", "Mahogany", "Fuchsia"],
+    29: ["Azure", "Burnt Orange", "Royal Purple", "Umber", "Cerise"],
+    30: ["Cerulean", "Rust", "Violet", "Sepia", "Rose Red"],
+    
+    # Medium (31-40) - Bold, saturated colors
+    31: ["Cobalt", "Mustard", "Magenta", "Chocolate", "Lime"],
+    32: ["Gold", "Bronze", "Mustard", "Bright Green", "Royal Blue"],
+    33: ["Canary Yellow", "Copper", "Hot Pink", "Forest Green", "Ultramarine"],
+    34: ["Sunflower", "Rust", "Fuchsia", "Hunter Green", "Sapphire"],
+    35: ["Golden Yellow", "Terracotta", "Magenta", "Emerald", "Navy"],
+    36: ["Marigold", "Clay", "Pink", "Teal", "Indigo"],
+    37: ["Amber", "Brick", "Rose", "Jade", "Deep Blue"],
+    38: ["Yellow", "Electric Blue", "Crimson", "Orange", "White"],
+    39: ["Lemon", "Azure", "Scarlet", "Tangerine", "Ivory"],
+    40: ["Bright Yellow", "Cerulean", "Ruby", "Burnt Orange", "Cream"],
+    
+    # Deep Medium (41-45) - Jewel tones and metallics
+    41: ["Gold", "Emerald", "Magenta", "Orange", "White"],
+    42: ["Emerald", "Sapphire", "Ruby", "Amethyst", "Silver"],
+    43: ["Jade", "Turquoise", "Garnet", "Topaz", "Pearl"],
+    44: ["Forest Green", "Royal Blue", "Crimson", "Amber", "Platinum"],
+    45: ["Kelly Green", "Cobalt", "Scarlet", "Gold", "Diamond White"],
+    
+    # Deep Dark (46-50) - Bright, electric colors and metallics
+    46: ["Electric Blue", "Hot Pink", "Lime", "Gold", "Pure White"],
+    47: ["Neon Green", "Fuchsia", "Yellow", "Rose Gold", "Bright White"],
+    48: ["Bright Turquoise", "Magenta", "Canary", "Copper", "Snow White"],
+    49: ["White", "Neon Pink", "Gold", "Fuchsia", "Turquoise"],
+    50: ["Pure White", "Electric Pink", "Bright Gold", "Neon Green", "Silver"]
 }
 
-# Color hex codes for visualization
+# Expanded color hex codes for visualization
 color_hex_map = {
+    # Existing colors
     "Lavender": "#E6E6FA", "Baby Blue": "#89CFF0", "Mint": "#98FF98",
     "Soft Pink": "#FFB6C1", "Light Grey": "#D3D3D3", "Emerald": "#50C878",
     "Sapphire": "#0F52BA", "Ruby": "#E0115F", "Navy Blue": "#000080",
@@ -47,7 +152,39 @@ color_hex_map = {
     "Royal Blue": "#4169E1", "Yellow": "#FFFF00", "Electric Blue": "#7DF9FF",
     "Crimson": "#DC143C", "Orange": "#FFA500", "Amethyst": "#9966CC",
     "Silver": "#C0C0C0", "Bright Red": "#FF0000", "Neon Pink": "#FF6EC7",
-    "Fuchsia": "#FF00FF"
+    "Fuchsia": "#FF00FF",
+    
+    # New colors for 50-tone scale
+    "Powder Blue": "#B0E0E6", "Peach": "#FFE5B4", "Rose Pink": "#FF66CC",
+    "Light Lavender": "#E6E6FA", "Cream": "#FFFDD0", "Soft Coral": "#F88379",
+    "Periwinkle": "#CCCCFF", "Blush Pink": "#FE828C", "Sage Green": "#9DC183",
+    "Ivory": "#FFFFF0", "Light Peach": "#FFE5CC", "Sky Blue": "#87CEEB",
+    "Rose": "#FF007F", "Lilac": "#C8A2C8", "Champagne": "#F7E7CE",
+    "Soft Yellow": "#FFFF99", "Seafoam": "#93E9BE", "Vanilla": "#F3E5AB",
+    "Light Coral": "#F08080", "Cornflower Blue": "#6495ED", "Mauve": "#E0B0FF",
+    "Apricot": "#FBCEB1", "Cerulean": "#007BA7", "Pink": "#FFC0CB",
+    "Beige": "#F5F5DC", "Azure": "#007FFF", "Salmon": "#FA8072",
+    "Taupe": "#483C32", "Sand": "#C2B280", "Melon": "#FEBAAD",
+    "Camel": "#C19A6B", "Rose Gold": "#B76E79", "Tan": "#D2B48C",
+    "Rust": "#B7410E", "Jade": "#00A86B", "Cobalt": "#0047AB",
+    "Caramel": "#C68E17", "Brick Red": "#CB4154", "Mocha": "#967969",
+    "Burnt Sienna": "#E97451", "Aquamarine": "#7FFFD4", "Indigo": "#4B0082",
+    "Cognac": "#9A463D", "Cinnamon": "#D2691E", "Mango": "#FDBE02",
+    "Chestnut": "#954535", "Paprika": "#8B2500", "Walnut": "#773F1A",
+    "Clay": "#B66A50", "Tangerine": "#F28500", "Cantaloupe": "#FFA500",
+    "Peacock Blue": "#005F73", "Violet": "#8F00FF", "Chocolate": "#7B3F00",
+    "Scarlet": "#FF2400", "Plum": "#8E4585", "Espresso": "#4E312D",
+    "Eggplant": "#614051", "Coffee": "#6F4E37", "Hot Pink": "#FF69B4",
+    "Cyan": "#00FFFF", "Flame Orange": "#FFA500", "Mahogany": "#C04000",
+    "Cerise": "#DE3163", "Umber": "#635147", "Sepia": "#704214",
+    "Lime": "#00FF00", "Canary Yellow": "#FFEF00", "Ultramarine": "#120A8F",
+    "Sunflower": "#FFDA03", "Hunter Green": "#355E3B", "Forest Green": "#228B22",
+    "Marigold": "#EAA221", "Kelly Green": "#4CBB17", "Garnet": "#733635",
+    "Topaz": "#FFC87C", "Pearl": "#EAE0C8", "Platinum": "#E5E4E2",
+    "Diamond White": "#F0EFF4", "Neon Green": "#39FF14", "Electric Pink": "#F535AA",
+    "Lemon": "#FFF700", "Amber": "#FFBF00", "Pure White": "#FFFFFF",
+    "Bright White": "#FAFAFA", "Snow White": "#FFFAFA", "Bright Gold": "#FFD700",
+    "Bright Turquoise": "#08E8DE"
 }
 
 # Determine the compatible Streamlit keyword for full-width images
@@ -293,11 +430,12 @@ with st.sidebar:
     ✓ Formats: JPG, PNG, JPEG
     """)
     
-    st.markdown("### 📊 MST Scale")
+    st.markdown("### 📊 Skin Tone Scale")
     st.markdown("""
-    The scale ranges from **1 (lightest)** to **10 (darkest)**, 
-    designed to represent diverse skin tones inclusively.
+    The scale ranges from **1 (lightest)** to **50 (darkest)**, 
+    designed to represent highly diverse skin tones with precision.
     """)
+
 
 # Main content area
 st.markdown("---")
@@ -342,7 +480,7 @@ if uploaded_file is not None:
                 # MST Score with custom styling
                 st.metric(
                     label="Monk Skin Tone Score",
-                    value=f"{mst_score} / 10",
+                    value=f"{mst_score} / 50",
                     delta="Detected"
                 )
                 
@@ -427,16 +565,27 @@ else:
     st.info("👆 **Upload a photo above to get started!**")
     
     st.markdown("---")
-    st.markdown("### 📊 The MST Scale")
-    st.caption("Here's what the 10 skin tones look like:")
+    st.markdown("### 📊 The 50-Tone Scale")
+    st.caption("Representing the full spectrum of human skin tones:")
     
+    # Show first 25 tones
     cols = st.columns(5)
-    for i in range(10):
+    for i in range(25):
         with cols[i % 5]:
             mst_num = i + 1
-            swatch = create_color_swatch(skin_tones[mst_num], (80, 80))
-            render_full_width_image(swatch)
-            st.caption(f"MST {mst_num}", unsafe_allow_html=True)
+            swatch = create_color_swatch(skin_tones[mst_num], (60, 60))
+            st.image(swatch, use_container_width=True)
+            st.caption(f"Tone {mst_num}")
+    
+    st.caption("Tones 26-50:")
+    cols = st.columns(5)
+    for i in range(25, 50):
+        with cols[i % 5]:
+            mst_num = i + 1
+            swatch = create_color_swatch(skin_tones[mst_num], (60, 60))
+            st.image(swatch, use_container_width=True)
+            st.caption(f"Tone {mst_num}")
+
 
 # Footer
 st.markdown("---")
