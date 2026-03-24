@@ -592,7 +592,7 @@ st.markdown("---")
 st.markdown("""
     <div style='text-align: center; padding: 2rem;'>
         <p style='color: #FF69B4; font-size: 0.9rem;'>
-            Made with 💖 by Your Name | Powered by OpenCV & Streamlit
+            Made by Mahfuza Laskar || Powered by OpenCV & Streamlit
         </p>
     </div>
 """, unsafe_allow_html=True)
