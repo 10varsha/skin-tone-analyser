@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import datetime
+import streamlit.components.v1 as components  # Add this at the top
 
 # MST skin tones (RGB tuples)
 # 50-tone skin scale (RGB tuples) - Fair to Deep Dark
@@ -515,6 +516,12 @@ if uploaded_file is not None:
                     render_full_width_image(color_swatch)
                     st.markdown(f"**{color}**")
                     st.caption(hex_color)
+
+            # 2. Add this selector immediately after the loop
+            st.markdown("### 🖐️ 3D Virtual Try-on")
+            selected_color = st.selectbox("Pick a color to 'Wear':", recommendations)
+            selected_bg_hex = color_hex_map.get(selected_color, "#FFFFFF")
+            detected_skin_hex = rgb_to_hex(skin_rgb)
             
             # Download section
             st.markdown("---")
@@ -587,12 +594,92 @@ else:
             st.caption(f"Tone {mst_num}")
 
 
+three_js_code = f"""
+<div id="three-container" style="width: 100%; height: 500px; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #FFE5F0; position: relative;">
+    <div id="canvas-target"></div>
+    <div id="loading-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: sans-serif; color: #FF69B4; text-align: center;">
+        ✨ Matching Skin Tone...
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<script>
+    const width = document.getElementById('three-container').clientWidth;
+    const height = 500;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 3);
+
+    const renderer = new THREE.WebGLRenderer({{ antialias: true, alpha: true }});
+    renderer.setSize(width, height);
+    
+    // CRITICAL: Ensure the renderer uses a linear color space to match Python's RGB
+    renderer.outputEncoding = THREE.LinearEncoding; 
+    
+    document.getElementById('canvas-target').appendChild(renderer.domElement);
+
+    // Flat neutral lighting to prevent "washing out" the dark/light tones
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0); 
+    scene.add(ambientLight);
+
+    const bgPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 20),
+        new THREE.MeshBasicMaterial({{ color: "{selected_bg_hex}", side: THREE.DoubleSide }})
+    );
+    bgPlane.position.z = -1;
+    bgPlane.position.x = -15; 
+    scene.add(bgPlane);
+
+    const loader = new THREE.GLTFLoader();
+    loader.setCrossOrigin('anonymous'); 
+    const modelUrl = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb'; 
+
+    loader.load(modelUrl, (gltf) => {{
+        const mesh = gltf.scene;
+        document.getElementById('loading-overlay').style.display = 'none';
+
+        mesh.traverse((child) => {{
+            if (child.isMesh) {{
+                // DISCARD default textures and use high-vibrancy material
+                child.material = new THREE.MeshLambertMaterial({{ 
+                    color: "{detected_skin_hex}",
+                    emissive: "{detected_skin_hex}",
+                    emissiveIntensity: 0.15, // Adds a subtle "glow" to keep color true in shade
+                    reflectivity: 0,
+                    combine: THREE.NoCombine
+                }});
+            }}
+        }});
+
+        mesh.scale.set(0.4, 0.4, 0.4);
+        mesh.position.y = -0.5;
+        scene.add(mesh);
+
+        function animate() {{
+            requestAnimationFrame(animate);
+            mesh.rotation.y += 0.005;
+            renderer.render(scene, camera);
+        }}
+        animate();
+
+        gsap.to(bgPlane.position, {{ x: 0, duration: 1.2, ease: "power2.out" }});
+    }});
+</script>
+"""
+
+# Render the component
+components.html(three_js_code, height=520)
+
 # Footer
 st.markdown("---")
 st.markdown("""
     <div style='text-align: center; padding: 2rem;'>
         <p style='color: #FF69B4; font-size: 0.9rem;'>
-            Made with 💖 by Your Name | Powered by OpenCV & Streamlit
+            Made by Mahfuza Laskar || Powered by OpenCV & Streamlit
         </p>
     </div>
 """, unsafe_allow_html=True)
