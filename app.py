@@ -137,6 +137,71 @@ mst_recommendations = {
     50: ["Pure White", "Electric Pink", "Bright Gold", "Neon Green", "Silver"]
 }
 
+# Colors to avoid based on 50-tone scale
+colors_to_avoid = {
+    # Very Fair (1-10) – Avoid harsh, overly warm, and very dark tones
+    1: ["Black", "Charcoal", "Mustard", "Rust", "Neon Pink"],
+    2: ["Jet Black", "Burnt Orange", "Olive", "Hot Pink", "Dark Brown"],
+    3: ["Deep Red", "Mustard Yellow", "Chocolate", "Neon Green", "Rust"],
+    4: ["Black", "Copper", "Dark Olive", "Bright Orange", "Neon Yellow"],
+    5: ["Charcoal", "Rust", "Deep Mustard", "Hot Pink", "Dark Green"],
+    6: ["Black", "Burnt Sienna", "Neon Orange", "Olive Brown", "Deep Purple"],
+    7: ["Dark Brown", "Rust", "Mustard", "Neon Pink", "Black"],
+    8: ["Charcoal", "Olive", "Burnt Orange", "Hot Red", "Neon Green"],
+    9: ["Black", "Deep Mustard", "Rust", "Dark Olive", "Electric Pink"],
+    10: ["Charcoal", "Burnt Orange", "Mustard", "Deep Brown", "Neon Yellow"],
+    
+    # Fair (11-20) – Avoid washed-out, overly cool, and muddy tones
+    11: ["Baby Pink", "Ice Blue", "Pale Yellow", "Grey Beige", "Ash Grey"],
+    12: ["Powder Pink", "Frost Blue", "Light Lavender", "Dull Beige", "Cool Grey"],
+    13: ["Pale Mint", "Icy Blue", "Dusty Grey", "Light Taupe", "Faded Pink"],
+    14: ["Baby Blue", "Soft Lilac", "Pale Peach", "Ash Brown", "Muted Grey"],
+    15: ["Light Yellow", "Powder Blue", "Cool Lavender", "Grey", "Washed Beige"],
+    16: ["Pastel Pink", "Ice Mint", "Faded Blue", "Dull Brown", "Soft Grey"],
+    17: ["Pale Coral", "Baby Blue", "Light Grey", "Dusty Lavender", "Ash Beige"],
+    18: ["Powder Yellow", "Icy Pink", "Faded Purple", "Cool Grey", "Muted Beige"],
+    19: ["Light Mint", "Baby Pink", "Ash Brown", "Pale Grey", "Frost Blue"],
+    20: ["Soft Yellow", "Ice Blue", "Light Taupe", "Dusty Grey", "Faded Peach"],
+    
+    # Light Medium (21-30) – Avoid faded, dusty, and weak tones
+    21: ["Light Beige", "Dusty Pink", "Pale Yellow", "Soft Grey", "Faded Blue"],
+    22: ["Muted Lavender", "Ash Grey", "Light Cream", "Dusty Peach", "Faded Mint"],
+    23: ["Pale Blue", "Washed Pink", "Light Taupe", "Soft Beige", "Dusty Lilac"],
+    24: ["Faded Coral", "Muted Purple", "Light Grey", "Ash Brown", "Pale Mint"],
+    25: ["Soft Yellow", "Dusty Rose", "Light Beige", "Faded Blue", "Grey"],
+    26: ["Off White", "Cream", "Light Grey", "Beige", "Dusty Pink"],
+    27: ["Muted Coral", "Faded Purple", "Soft Brown", "Light Grey", "Dusty Blue"],
+    28: ["Pale Orange", "Ash Grey", "Light Lavender", "Faded Pink", "Soft Beige"],
+    29: ["Muted Red", "Dusty Blue", "Light Brown", "Soft Grey", "Faded Purple"],
+    30: ["Pale Peach", "Light Taupe", "Dusty Violet", "Grey Beige", "Faded Coral"],
+    
+    # Medium (31-40) – Avoid pastels and overly cool/light tones
+    31: ["Baby Pink", "Powder Blue", "Mint", "Light Lavender", "Pale Yellow"],
+    32: ["Soft Peach", "Ice Blue", "Pastel Green", "Light Lilac", "Cream"],
+    33: ["Powder Pink", "Baby Blue", "Soft Grey", "Light Mint", "Pale Beige"],
+    34: ["Pastel Yellow", "Ice Mint", "Light Blue", "Soft Pink", "Ash Grey"],
+    35: ["Baby Pink", "Powder Blue", "Light Lavender", "Cream", "Soft Yellow"],
+    36: ["Soft Coral", "Ice Blue", "Light Mint", "Pastel Purple", "Beige"],
+    37: ["Light Peach", "Powder Blue", "Soft Pink", "Pale Yellow", "Grey"],
+    38: ["Pastel Blue", "Light Lavender", "Soft Coral", "Mint", "Cream"],
+    39: ["Baby Yellow", "Ice Blue", "Soft Pink", "Light Grey", "Beige"],
+    40: ["Powder Pink", "Light Mint", "Pastel Blue", "Soft Yellow", "Ash Grey"],
+    
+    # Deep Medium (41-45) – Avoid muted, dusty, and pale tones
+    41: ["Dusty Pink", "Muted Peach", "Light Beige", "Soft Yellow", "Pale Grey"],
+    42: ["Pastel Blue", "Light Lavender", "Soft Peach", "Beige", "Ash Grey"],
+    43: ["Dusty Rose", "Muted Coral", "Light Taupe", "Soft Yellow", "Pale Mint"],
+    44: ["Pastel Pink", "Light Blue", "Soft Grey", "Beige", "Faded Yellow"],
+    45: ["Muted Peach", "Dusty Lavender", "Light Brown", "Soft Beige", "Pale Grey"],
+    
+    # Deep Dark (46-50) – Avoid dull, muted, and low-contrast tones
+    46: ["Olive Brown", "Mud Grey", "Dusty Blue", "Muted Pink", "Faded Green"],
+    47: ["Dull Beige", "Muted Lavender", "Ash Grey", "Soft Brown", "Faded Yellow"],
+    48: ["Olive Drab", "Dusty Coral", "Muted Blue", "Grey Brown", "Soft Peach"],
+    49: ["Mud Brown", "Dusty Pink", "Muted Grey", "Faded Blue", "Soft Beige"],
+    50: ["Dull Olive", "Ash Brown", "Muted Purple", "Dusty Yellow", "Grey Beige"]
+}
+
 # Expanded color hex codes for visualization
 color_hex_map = {
     # Existing colors
@@ -185,20 +250,41 @@ color_hex_map = {
     "Diamond White": "#F0EFF4", "Neon Green": "#39FF14", "Electric Pink": "#F535AA",
     "Lemon": "#FFF700", "Amber": "#FFBF00", "Pure White": "#FFFFFF",
     "Bright White": "#FAFAFA", "Snow White": "#FFFAFA", "Bright Gold": "#FFD700",
-    "Bright Turquoise": "#08E8DE"
+    "Bright Turquoise": "#08E8DE",
+    
+    # Colors to avoid - additional hex codes
+    "Jet Black": "#0A0A0A", "Mustard Yellow": "#E1AD21", "Dark Olive": "#556B2F",
+    "Bright Orange": "#FFA500", "Neon Yellow": "#FFFF00", "Deep Mustard": "#DAA520",
+    "Dark Green": "#006400", "Olive Brown": "#6B4423", "Hot Red": "#FF0000",
+    "Deep Brown": "#5C4033", "Ice Blue": "#A5F2F3", "Pale Yellow": "#FFFFE0",
+    "Grey Beige": "#D3D3D3", "Ash Grey": "#B2BEB5", "Frost Blue": "#A5F2F3",
+    "Dull Beige": "#D3BDA8", "Cool Grey": "#8C92AC", "Pale Mint": "#98FB98",
+    "Icy Blue": "#A5F2F3", "Dusty Grey": "#A9A9A9", "Light Taupe": "#B19CD9",
+    "Soft Lilac": "#C8A2C8", "Pale Peach": "#FFE5B4", "Ash Brown": "#B2BEB5",
+    "Muted Grey": "#696969", "Cool Lavender": "#B19CD9", "Washed Beige": "#F5F5DC",
+    "Ice Mint": "#98FB98", "Faded Blue": "#ADD8E6", "Dull Brown": "#8B4513",
+    "Pale Coral": "#FF7F50", "Dusty Lavender": "#B19CD9", "Ash Beige": "#F5F5DC",
+    "Powder Yellow": "#FFFF99", "Icy Pink": "#FFB6C1", "Faded Purple": "#DDA0DD",
+    "Light Mint": "#98FB98", "Frost Blue": "#A5F2F3", "Faded Peach": "#FFE5B4",
+    "Light Beige": "#F5F5DC", "Faded Blue": "#ADD8E6", "Muted Lavender": "#B19CD9",
+    "Light Cream": "#FFFDD0", "Dusty Peach": "#FFE5B4", "Faded Mint": "#98FB98",
+    "Pale Blue": "#ADD8E6", "Washed Pink": "#FFB6C1", "Dusty Lilac": "#C8A2C8",
+    "Faded Coral": "#FF7F50", "Muted Purple": "#9370DB", "Ash Brown": "#B2BEB5",
+    "Dusty Rose": "#DCAE96", "Off White": "#FAF9F6", "Muted Coral": "#FF7F50",
+    "Faded Purple": "#DDA0DD", "Soft Brown": "#D2691E", "Dusty Blue": "#ADD8E6",
+    "Pale Orange": "#FFA500", "Muted Red": "#DC143C", "Light Brown": "#D2691E",
+    "Pale Peach": "#FFE5B4", "Dusty Violet": "#DDA0DD", "Grey Beige": "#D3D3D3",
+    "Pastel Green": "#77DD77", "Light Lilac": "#C8A2C8", "Pastel Yellow": "#FFFF99",
+    "Ice Mint": "#98FB98", "Pastel Purple": "#DDA0DD", "Light Peach": "#FFE5B4",
+    "Pastel Blue": "#ADD8E6", "Soft Coral": "#F88379", "Baby Yellow": "#FFFF99",
+    "Muted Peach": "#FFE5B4", "Pale Grey": "#D3D3D3", "Dusty Rose": "#DCAE96",
+    "Faded Yellow": "#FFFF99", "Dusty Lavender": "#B19CD9", "Olive Brown": "#6B4423",
+    "Mud Grey": "#847C74", "Faded Green": "#90EE90", "Muted Lavender": "#B19CD9",
+    "Soft Brown": "#D2691E", "Olive Drab": "#6B8E23", "Dusty Coral": "#FF7F50",
+    "Grey Brown": "#8C7853", "Soft Peach": "#FFE5B4", "Mud Brown": "#8B4513",
+    "Muted Grey": "#696969", "Faded Blue": "#ADD8E6", "Dull Olive": "#556B2F",
+    "Ash Brown": "#B2BEB5", "Muted Purple": "#9370DB", "Dusty Yellow": "#FFFF99"
 }
-
-# Determine the compatible Streamlit keyword for full-width images
-_image_width_kwarg = (
-    "use_container_width"
-    if "use_container_width" in inspect.signature(st.image).parameters
-    else "use_column_width"
-)
-
-
-def render_full_width_image(image, caption=None):
-    """Render an image that adapts to the container width across Streamlit versions."""
-    st.image(image, caption=caption, **{_image_width_kwarg: True})
 
 def detect_face_and_skin_tone(image):
     """
@@ -275,7 +361,7 @@ def rgb_to_hex(rgb):
     """Convert RGB tuple to hex color code"""
     return '#{:02x}{:02x}{:02x}'.format(int(rgb[0]), int(rgb[1]), int(rgb[2]))
 
-def generate_report(uploaded_file, mst_score, skin_rgb, recommendations):
+def generate_report(uploaded_file, mst_score, skin_rgb, recommendations, colors_to_avoid_list):
     """Generate downloadable text report"""
     report = f"""
 ╔══════════════════════════════════════════════════════════╗
@@ -286,7 +372,7 @@ Image: {uploaded_file.name}
 Analysis Date: {datetime.datetime.now().strftime("%B %d, %Y at %I:%M %p")}
 
 ┌─ SKIN TONE ANALYSIS ────────────────────────────────────┐
-│ Monk Skin Tone (MST) Score: {mst_score}/10
+│ Monk Skin Tone (MST) Score: {mst_score}/50
 │ Detected RGB Values: {skin_rgb}
 │ Hex Color Code: {rgb_to_hex(skin_rgb)}
 └─────────────────────────────────────────────────────────┘
@@ -299,6 +385,14 @@ Analysis Date: {datetime.datetime.now().strftime("%B %d, %Y at %I:%M %p")}
     
     report += """└─────────────────────────────────────────────────────────┘
 
+┌─ COLORS TO AVOID ───────────────────────────────────────┐
+"""
+    for i, color in enumerate(colors_to_avoid_list, 1):
+        hex_code = color_hex_map.get(color, "#000000")
+        report += f"│ {i}. {color:<20} {hex_code}\n"
+    
+    report += """└─────────────────────────────────────────────────────────┘
+
 💡 STYLE TIPS:
 • These colors complement your natural skin tone beautifully
 • Mix and match within your color palette for best results
@@ -306,21 +400,28 @@ Analysis Date: {datetime.datetime.now().strftime("%B %d, %Y at %I:%M %p")}
 • Don't be afraid to experiment with different shades!
 
 ✨ ABOUT MST SCALE:
-The Monk Skin Tone (MST) scale is a 10-shade scale designed to
+The Monk Skin Tone (MST) scale is a 50-shade scale designed to
 represent a diverse range of skin tones for better inclusivity.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Generated by Skin Tone Analyzer
+Generated by SKINLYTICS - Your Personal Skin Tone Analyzer
 Visit: https://github.com/yourusername/skin-tone-analyzer
 """
     return report
+
+def render_full_width_image(image, caption=None):
+    """Render an image that adapts to the container width across Streamlit versions."""
+    try:
+        st.image(image, caption=caption, use_container_width=True)
+    except TypeError:
+        st.image(image, caption=caption)
 
 # ═══════════════════════════════════════════════════════════
 #                    STREAMLIT UI
 # ═══════════════════════════════════════════════════════════
 
 st.set_page_config(
-    page_title="Skin Tone Analyzer",
+    page_title="SKINLYTICS",
     page_icon="🎨",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -402,14 +503,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Header
-st.markdown('<h1 class="main-title">🎨 Skin Tone Analyzer</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">🎨 SKINLYTICS</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Discover your perfect color palette in seconds ✨</p>', unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
     st.markdown("### 📖 About")
     st.info("""
-    **Skin Tone Analyzer** uses the Monk Skin Tone (MST) scale to determine 
+    **SKINLYTICS** uses the Monk Skin Tone (MST) scale to determine 
     your skin tone and recommend colors that complement your natural complexion.
     """)
     
@@ -517,11 +618,118 @@ if uploaded_file is not None:
                     st.markdown(f"**{color}**")
                     st.caption(hex_color)
 
+            # Colors to avoid section
+            st.markdown("---")
+            st.markdown("### 🚫 Colors to Avoid")
+            st.markdown("*These colors may not complement your skin tone as well*")
+            
+            colors_to_avoid_list = colors_to_avoid[mst_score]
+            
+            # Display colors to avoid as swatches
+            cols = st.columns(5)
+            for idx, color in enumerate(colors_to_avoid_list):
+                with cols[idx % 5]:
+                    hex_color = color_hex_map.get(color, "#CCCCCC")
+                    
+                    # Convert hex to RGB
+                    hex_color_clean = hex_color.lstrip('#')
+                    rgb = tuple(int(hex_color_clean[i:i+2], 16) for i in (0, 2, 4))
+                    
+                    # Create swatch
+                    color_swatch = create_color_swatch(rgb, (100, 100))
+                    render_full_width_image(color_swatch)
+                    st.markdown(f"**{color}**")
+                    st.caption(hex_color)
+
             # 2. Add this selector immediately after the loop
             st.markdown("### 🖐️ 3D Virtual Try-on")
-            selected_color = st.selectbox("Pick a color to 'Wear':", recommendations)
+            category = st.radio("Choose color category:", ["Recommended Colors", "Colors to Avoid"], horizontal=True, label_visibility="collapsed")
+            if category == "Recommended Colors":
+                selected_color = st.selectbox("Pick a recommended color to try:", recommendations, key="rec")
+            else:
+                selected_color = st.selectbox("Pick a color to avoid to try:", colors_to_avoid_list, key="avoid")
             selected_bg_hex = color_hex_map.get(selected_color, "#FFFFFF")
             detected_skin_hex = rgb_to_hex(skin_rgb)
+
+            three_js_code = f"""
+            <div id="three-container" style="width: 100%; height: 500px; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #FFE5F0; position: relative;">
+                <div id="canvas-target"></div>
+                <div id="loading-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: sans-serif; color: #FF69B4; text-align: center;">
+                    ✨ Matching Skin Tone...
+                </div>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+            <script>
+                const width = document.getElementById('three-container').clientWidth;
+                const height = 500;
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+                camera.position.set(0, 0, 3);
+
+                const renderer = new THREE.WebGLRenderer({{ antialias: true, alpha: true }});
+                renderer.setSize(width, height);
+                
+                // CRITICAL: Ensure the renderer uses a linear color space to match Python's RGB
+                renderer.outputEncoding = THREE.LinearEncoding; 
+                
+                document.getElementById('canvas-target').appendChild(renderer.domElement);
+
+                // Flat neutral lighting to prevent "washing out" the dark/light tones
+                const ambientLight = new THREE.AmbientLight(0xffffff, 1.0); 
+                scene.add(ambientLight);
+
+                const bgPlane = new THREE.Mesh(
+                    new THREE.PlaneGeometry(20, 20),
+                    new THREE.MeshBasicMaterial({{ color: "{selected_bg_hex}", side: THREE.DoubleSide }})
+                );
+                bgPlane.position.z = -1;
+                bgPlane.position.x = -15; 
+                scene.add(bgPlane);
+
+                const loader = new THREE.GLTFLoader();
+                loader.setCrossOrigin('anonymous'); 
+                const modelUrl = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb'; 
+
+                loader.load(modelUrl, (gltf) => {{
+                    const mesh = gltf.scene;
+                    document.getElementById('loading-overlay').style.display = 'none';
+
+                    mesh.traverse((child) => {{
+                        if (child.isMesh) {{
+                            // DISCARD default textures and use high-vibrancy material
+                            child.material = new THREE.MeshLambertMaterial({{ 
+                                color: "{detected_skin_hex}",
+                                emissive: "{detected_skin_hex}",
+                                emissiveIntensity: 0.15, // Adds a subtle "glow" to keep color true in shade
+                                reflectivity: 0,
+                                combine: THREE.NoCombine
+                            }});
+                        }}
+                    }});
+
+                    mesh.scale.set(0.4, 0.4, 0.4);
+                    mesh.position.y = -0.5;
+                    scene.add(mesh);
+
+                    function animate() {{
+                        requestAnimationFrame(animate);
+                        mesh.rotation.y += 0.005;
+                        renderer.render(scene, camera);
+                    }}
+                    animate();
+
+                    gsap.to(bgPlane.position, {{ x: 0, duration: 1.2, ease: "power2.out" }});
+                }});
+            </script>
+            """
+
+            # Render the component
+            components.html(three_js_code, height=520)
             
             # Download section
             st.markdown("---")
@@ -530,7 +738,8 @@ if uploaded_file is not None:
             col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 2])
             
             with col_btn1:
-                report_text = generate_report(uploaded_file, mst_score, skin_rgb, recommendations)
+                colors_to_avoid_list = colors_to_avoid[mst_score]
+                report_text = generate_report(uploaded_file, mst_score, skin_rgb, recommendations, colors_to_avoid_list)
                 st.download_button(
                     label="📄 Download Report",
                     data=report_text,
@@ -562,6 +771,8 @@ if uploaded_file is not None:
                 - Use them as reference for makeup selection
                 - Consider them for home decor or personal branding
                 """)
+            
+            
     
     except Exception as e:
         st.error(f"❌ **Error loading image:** {str(e)}")
@@ -593,86 +804,6 @@ else:
             st.image(swatch, use_container_width=True)
             st.caption(f"Tone {mst_num}")
 
-
-three_js_code = f"""
-<div id="three-container" style="width: 100%; height: 500px; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #FFE5F0; position: relative;">
-    <div id="canvas-target"></div>
-    <div id="loading-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: sans-serif; color: #FF69B4; text-align: center;">
-        ✨ Matching Skin Tone...
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
-<script>
-    const width = document.getElementById('three-container').clientWidth;
-    const height = 500;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 3);
-
-    const renderer = new THREE.WebGLRenderer({{ antialias: true, alpha: true }});
-    renderer.setSize(width, height);
-    
-    // CRITICAL: Ensure the renderer uses a linear color space to match Python's RGB
-    renderer.outputEncoding = THREE.LinearEncoding; 
-    
-    document.getElementById('canvas-target').appendChild(renderer.domElement);
-
-    // Flat neutral lighting to prevent "washing out" the dark/light tones
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0); 
-    scene.add(ambientLight);
-
-    const bgPlane = new THREE.Mesh(
-        new THREE.PlaneGeometry(20, 20),
-        new THREE.MeshBasicMaterial({{ color: "{selected_bg_hex}", side: THREE.DoubleSide }})
-    );
-    bgPlane.position.z = -1;
-    bgPlane.position.x = -15; 
-    scene.add(bgPlane);
-
-    const loader = new THREE.GLTFLoader();
-    loader.setCrossOrigin('anonymous'); 
-    const modelUrl = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb'; 
-
-    loader.load(modelUrl, (gltf) => {{
-        const mesh = gltf.scene;
-        document.getElementById('loading-overlay').style.display = 'none';
-
-        mesh.traverse((child) => {{
-            if (child.isMesh) {{
-                // DISCARD default textures and use high-vibrancy material
-                child.material = new THREE.MeshLambertMaterial({{ 
-                    color: "{detected_skin_hex}",
-                    emissive: "{detected_skin_hex}",
-                    emissiveIntensity: 0.15, // Adds a subtle "glow" to keep color true in shade
-                    reflectivity: 0,
-                    combine: THREE.NoCombine
-                }});
-            }}
-        }});
-
-        mesh.scale.set(0.4, 0.4, 0.4);
-        mesh.position.y = -0.5;
-        scene.add(mesh);
-
-        function animate() {{
-            requestAnimationFrame(animate);
-            mesh.rotation.y += 0.005;
-            renderer.render(scene, camera);
-        }}
-        animate();
-
-        gsap.to(bgPlane.position, {{ x: 0, duration: 1.2, ease: "power2.out" }});
-    }});
-</script>
-"""
-
-# Render the component
-components.html(three_js_code, height=520)
 
 # Footer
 st.markdown("---")
